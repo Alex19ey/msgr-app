@@ -1,0 +1,122 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "msgr-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/msgr-app",
+      "sourceRoot": "projects/msgr-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "outputPath": "dist/msgr-app",
+            "index": "projects/msgr-app/src/index.html",
+            "main": "projects/msgr-app/src/main.ts",
+            "polyfills": "projects/msgr-app/src/polyfills.ts",
+            "tsConfig": "projects/msgr-app/tsconfig.app.json",
+            "aot": true,
+            "assets": ["projects/msgr-app/src/favicon.ico", "projects/msgr-app/src/assets"],
+            "styles": ["projects/msgr-app/src/styles/main.scss"],
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.js"
+            }
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/msgr-app/src/environments/environment.ts",
+                  "with": "projects/msgr-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "msgr-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "msgr-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-builders/custom-webpack:extract-i18n",
+          "options": {
+            "browserTarget": "msgr-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/custom-webpack:karma",
+          "options": {
+            "main": "projects/msgr-app/src/test.ts",
+            "polyfills": "projects/msgr-app/src/polyfills.ts",
+            "tsConfig": "projects/msgr-app/tsconfig.spec.json",
+            "karmaConfig": "projects/msgr-app/karma.conf.js",
+            "assets": ["projects/msgr-app/src/favicon.ico", "projects/msgr-app/src/assets"],
+            "styles": ["projects/msgr-app/src/styles/main.scss"],
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.js"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/msgr-app/tsconfig.app.json",
+              "projects/msgr-app/tsconfig.spec.json",
+              "projects/msgr-app/e2e/tsconfig.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/msgr-app/e2e/protractor.conf.js",
+            "devServerTarget": "msgr-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "msgr-app:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "msgr-app"
+}
